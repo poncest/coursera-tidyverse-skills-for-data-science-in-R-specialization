@@ -1,6 +1,6 @@
 # Tidyverse Skills for Data Science in R Specialization
 
-This is a GitHub Repository for Coursera idyverse Skills for Data Science in R Specialization.
+This is a GitHub Repository for Coursera Tidyverse Skills for Data Science in R Specialization.
 
 https://www.coursera.org/specializations/tidyverse-data-science-r
 
