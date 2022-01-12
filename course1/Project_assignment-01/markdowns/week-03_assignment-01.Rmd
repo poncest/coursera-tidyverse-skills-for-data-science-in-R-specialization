@@ -1,0 +1,56 @@
+---
+title: "Week 04 - Assignment 01"
+author: "Steven Ponce"
+date: "2022/01/12" #(ISO 8601 Format)  
+output: html_document
+---
+
+## Course: Introduction to the Tidyverse
+
+This is an R Markdown for week 3 - assignment 01.
+
+Assignment Topic:
+
+The goal of this assignment is to create a new data science project in preparation for analyzing data. The data analysis (not actually done here) would take the dataset for health care expenditures and consider the question: Is there a relationship between healthcare coverage and healthcare spending in the United States? 
+
+> If needed, run the following code: `install.packages('ProjectTemplate')`
+
+## Load Library
+```{r setup}
+library('ProjectTemplate')
+```
+
+## Create new project template
+
+To create new project, uncomment the code lines below
+```{r new project template}
+
+# create.project(project.name = "week-04_assignment-01",
+              # template = "minimal")
+```
+
+## Instructions:
+
+1. Upload a screenshot of the project root directory displayed in the Files browser in RStudio. The project root directory is the highest level of the project hierarchy.
+
+![Figure 1: project root directory screenshot](/Users/poncest/OneDrive - Bristol Myers Squibb/Desktop/Coursera/coursera-tidyverse-skills-for-data-science-in-R-specialization/course1/Project_assignment-01/screenshots/week_04-assignment-01_fig-01.png)
+
+
+2. Upload a screenshot that shows the location of the healthcare_datasets.zip file in the Files browser in RStudio.
+
+![Figure 2: location of the healthcare_datasets.zip screenshot](/Users/poncest/OneDrive - Bristol Myers Squibb/Desktop/Coursera/coursera-tidyverse-skills-for-data-science-in-R-specialization/course1/Project_assignment-01/screenshots/week_04-assignment-01_fig-02.png)
+
+
+
+3.	Upload a screenshot of the contents of the R Markdown file that you created to store the final report. For this you can open the R Markdown file in the RStudio editor.
+
+![Figure 3: R Markdown file screenshot](/Users/poncest/OneDrive - Bristol Myers Squibb/Desktop/Coursera/coursera-tidyverse-skills-for-data-science-in-R-specialization/course1/Project_assignment-01/screenshots/week_04-assignment-01_fig-03.png)
+
+
+4.	Upload a screenshot of the contents of the R script file that you created to contain the code for the exploratory analysis. For this you can open the R script file in the RStudio editor.
+
+![Figure 4: R script file screenshot](/Users/poncest/OneDrive - Bristol Myers Squibb/Desktop/Coursera/coursera-tidyverse-skills-for-data-science-in-R-specialization/course1/Project_assignment-01/screenshots/week_04-assignment-01_fig-04.png)
+
+
+
+
