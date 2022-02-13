@@ -1,4 +1,8 @@
 
+# Author: Steven Ponce
+# Date: 2022-02-13
+
+
 # Question 1 ---
 # For this question you will need to read the `excel_data.xlsx` file into R using the readxl package. There are two sheets in this spreadsheet file named "Sheet1" and "Sheet2". Use the readxl package to read in "Sheet2" from the spreadsheet file directly and answer the question below. Recall that the [[ operator can be used to subset a column of tibble or data frame.
 
