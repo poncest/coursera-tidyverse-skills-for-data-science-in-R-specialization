@@ -1,0 +1,196 @@
+---
+title: "Course 04: Final Project"
+author: "Steven Ponce"
+date:   "2022-03-06"
+output: 
+    html_document:
+        toc: TRUE
+        theme: flatly
+        highlight: tango
+        code_folding: show
+        df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Instructions:** 
+
+>In this course, we have learned the importance of data visualization and how to leverage packages in the Tidyverse for data visualization in R. This project will give you the opportunity to practice those skills in greater depth. 
+>
+>This assignment uses two data sets about fast food restaurants.  Specifically, we will create data visualizations using:
+>
+>1. Data set: annual sales information and number of stores per fast food restaurants in 2018 (data_fastfood_sales.csv). Source: Data originally from Hubworks. 
+>
+>2. Data set: nutrition information about entrees from fast food restaurants (data_fastfood_calories.csv). Source: Data originally from the GitHub repository from the Tidy Tuesday project in R4DS online learning community. 
+
+## Load Libraries and Read Data
+```{r, message=FALSE, warning=FALSE}
+library(pacman)
+p_load(tidyverse, skimr, ggrepel)
+```
+
+Annual sales information and number of stores per fast food restaurants in 2018 
+```{r sales}
+sales <- read_csv('../data/raw_data/data_fastfood_sales.csv')
+```
+
+Nutrition information about entrees from fast food restaurants
+```{r calories}
+calories <- read_csv('../data/raw_data/data_fastfood_calories.csv')
+```
+
+## Explore the Data
+```{r EDA}
+skim(sales)
+skim(calories)
+
+glimpse(sales)
+glimpse(calories)
+
+unique(sales$restaurant)     
+unique(calories$restaurant)
+```
+
+**Merging the two datasets** 
+```{r inner join}
+data <- sales %>% 
+  inner_join(calories, by = 'restaurant')
+```
+
+# Problem 1: Sales vs. Num. Stores
+```{r problem 1}
+
+# prep the data
+p1 <- sales %>% 
+  
+  select(restaurant, us_sales, num_franchised_stores, unit_count) %>% 
+  mutate(prop_franchised_stores = num_franchised_stores/unit_count) %>% 
+  group_by(restaurant, num_franchised_stores, us_sales, prop_franchised_stores, unit_count) %>%
+  summarise(us_sales = sum(us_sales)) %>% 
+  arrange(desc(prop_franchised_stores)) %>% 
+  ungroup()
+
+
+# visualization
+p1 %>% 
+  ggplot(aes(x = us_sales,
+             y = unit_count,
+             color = prop_franchised_stores)) + 
+  
+  geom_point(size = 3) + 
+  scale_x_log10() +
+  scale_y_log10() +
+
+  labs(
+    title = "Problem 1: US Sales vs. Number of Stores",
+    subtitle = '',
+    x = 'U.S. sales in millions (log10 scale)',
+    y = 'Total number if stores (log10 scale)',
+    caption =paste0("Data: Hubworks & Tidy Tuesday project • Visualization: Steven Ponce (@sponce1)"),
+    color = "Proportion of stores\nfranchised") +   # legend title
+  
+  theme_bw() +
+  
+  # theme
+  theme(
+    plot.margin = margin(t = 10, r = 5, b = 10, l = 5),
+    legend.position = 'right',
+    axis.title = element_text(size = 12),
+    axis.text  = element_text(size = 10),
+    
+    plot.title = element_text(
+      color = "#2C3E50",
+      face = "bold",
+      size = 14,  
+      margin = margin(t = 10)),
+    
+    plot.subtitle = element_text(
+      color = "#2C3E50",
+      size = 14,  
+      margin = margin(b = 5)),
+    
+    plot.caption = element_text(
+      color = "grey60",
+      size = 10,
+      hjust = .5,
+      margin = margin(t = 15, b = 15)) 
+  )   +
+  
+  # datapoints labels
+  geom_text_repel(aes(label = restaurant), color = 'black')
+
+``` 
+
+# Problem 2: Average sales per unit store
+```{r problem 2}
+
+# prep the data
+p2 <- sales %>% 
+  
+  select(restaurant, average_sales) %>% 
+  group_by(restaurant) %>%
+  summarise(average_sales = sum(average_sales)) %>% 
+  arrange(desc(average_sales)) %>% 
+  
+  # bar labels
+  mutate(
+    bar_label = round(average_sales, digits = 0),
+    bar_label = paste0('$', {bar_label})
+    ) %>% 
+  
+  # order by sales from High to Low
+  mutate(restaurant = restaurant %>% fct_reorder(average_sales)) %>% 
+  ungroup()
+
+
+# visualization  
+p2 %>% 
+  ggplot(aes(x = average_sales, y = restaurant)) +
+  geom_col() +
+  
+  scale_x_continuous(labels = scales::dollar_format()) +
+  scale_y_discrete() +
+  
+  labs(
+    title = "Problem 2: Average sales per unit store",
+    subtitle = '',
+    x = 'Average sales per unit store (in thousands)',
+    y = 'Restaurant',
+    caption =paste0("Data: Hubworks & Tidy Tuesday project • Visualization: Steven Ponce (@sponce1)")) +
+  
+  theme_classic() +
+  
+  # theme
+  theme(
+    plot.margin = margin(t = 10, r = 5, b = 10, l = 5),
+    legend.position = 'right',
+    axis.title = element_text(size = 12),
+    axis.text  = element_text(size = 10),
+    
+    plot.title = element_text(
+      color = "#2C3E50",
+      face = "bold",
+      size = 14,  
+      margin = margin(t = 10)),
+    
+    plot.subtitle = element_text(
+      color = "#2C3E50",
+      size = 14,  
+      margin = margin(b = 5)),
+    
+    plot.caption = element_text(
+      color = "grey60",
+      size = 10,
+      hjust = .5,
+      margin = margin(t = 15, b = 15)) 
+  )  +
+  
+  # col labels
+  geom_text(aes(label = bar_label, hjust= -0.25)) 
+
+  
+```
+ 
+ 
