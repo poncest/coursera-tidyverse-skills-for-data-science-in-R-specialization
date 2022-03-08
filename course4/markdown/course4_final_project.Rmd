@@ -62,7 +62,7 @@ data <- sales %>%
 # Problem 1: Sales vs. Num. Stores
 ```{r problem 1}
 
-# prep the data
+## data
 p1 <- sales %>% 
   
   select(restaurant, us_sales, num_franchised_stores, unit_count) %>% 
@@ -72,8 +72,7 @@ p1 <- sales %>%
   arrange(desc(prop_franchised_stores)) %>% 
   ungroup()
 
-
-# visualization
+## visualization
 p1 %>% 
   ggplot(aes(x = us_sales,
              y = unit_count,
@@ -126,7 +125,7 @@ p1 %>%
 # Problem 2: Average sales per unit store
 ```{r problem 2}
 
-# prep the data
+## data
 p2 <- sales %>% 
   
   select(restaurant, average_sales) %>% 
@@ -145,13 +144,14 @@ p2 <- sales %>%
   ungroup()
 
 
-# visualization  
+## visualization  
 p2 %>% 
   ggplot(aes(x = average_sales, y = restaurant)) +
   geom_col() +
   
   scale_x_continuous(labels = scales::dollar_format()) +
   scale_y_discrete() +
+  coord_cartesian(clip='off') +
   
   labs(
     title = "Problem 2: Average sales per unit store",
@@ -164,7 +164,7 @@ p2 %>%
   
   # theme
   theme(
-    plot.margin = margin(t = 10, r = 5, b = 10, l = 5),
+    plot.margin = margin(t = 10, r = 25, b = 10, l = 20),
     legend.position = 'right',
     axis.title = element_text(size = 12),
     axis.text  = element_text(size = 10),
@@ -189,8 +189,26 @@ p2 %>%
   
   # col labels
   geom_text(aes(label = bar_label, hjust= -0.25)) 
+ 
+```
 
-  
+# Problem 3: Sodium Levels
+```{r problem 3}
+
+# IN-PROCESS
+## data
+
+p3 <- calories %>% 
+  select(restaurant, item, calories, sodium) 
+
+
+## visualization
+p3 %>% 
+  ggplot(aes( x = calories,
+              y = sodium)) +
+  geom_point() +
+  geom_hline(yintercept = 2300) +
+  facet_wrap(~ restaurant)
 ```
  
  
