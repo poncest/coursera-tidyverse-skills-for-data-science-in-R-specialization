@@ -193,22 +193,59 @@ p2 %>%
 ```
 
 # Problem 3: Sodium Levels
-```{r problem 3}
+```{r problem 3, message=FALSE, warning=FALSE, fig.height = 12, fig.width = 12}
 
-# IN-PROCESS
 ## data
 
 p3 <- calories %>% 
   select(restaurant, item, calories, sodium) 
 
-
 ## visualization
 p3 %>% 
-  ggplot(aes( x = calories,
-              y = sodium)) +
-  geom_point() +
-  geom_hline(yintercept = 2300) +
-  facet_wrap(~ restaurant)
+  ggplot(aes(x = calories, y = sodium)) + 
+  
+  facet_wrap(~restaurant) +
+  geom_point(size = 2, alpha = 0.5) +
+  geom_hline(yintercept = 2300) + 
+  
+  geom_text_repel(data = p3  %>% filter(sodium > 2300),
+                  aes(label = item, direction = 'y'), 
+                  nudge_x = 800, nudge_y = 1000) +
+
+  #labs
+  labs(
+    title = "Problem 3: Sodium Levels",
+    subtitle = '',
+    x = 'Calories',
+    y = 'Sodium (mg)',
+    caption =paste0("Data: Hubworks & Tidy Tuesday project • Visualization: Steven Ponce (@sponce1)")
+    ) +
+  
+  # theme
+  theme_bw() + 
+  
+  theme(
+    plot.margin = margin(t = 10, r = 25, b = 10, l = 20),
+    legend.position = 'right',
+    axis.title = element_text(size = 12),
+    axis.text  = element_text(size = 10),
+    
+    plot.title = element_text(
+      color = "#2C3E50",
+      face = "bold",
+      size = 14,  
+      margin = margin(t = 10)),
+    
+    plot.subtitle = element_text(
+      color = "#2C3E50",
+      size = 14,  
+      margin = margin(b = 5)),
+    
+    plot.caption = element_text(
+      color = "grey60",
+      size = 10,
+      hjust = .5,
+      margin = margin(t = 15, b = 15)))
 ```
  
  
