@@ -53,12 +53,6 @@ unique(sales$restaurant)
 unique(calories$restaurant)
 ```
 
-**Merging the two datasets** 
-```{r inner join}
-data <- sales %>% 
-  inner_join(calories, by = 'restaurant')
-```
-
 # Problem 1: Sales vs. Num. Stores
 ```{r problem 1}
 
@@ -247,8 +241,7 @@ p3 %>%
       margin = margin(t = 15, b = 15)))
 ```
  
-# Problem 4: Any Salad? 
-
+# Problem 4: Any Salad?   
 ```{r problem 4, fig.height = 8, fig.width = 12}
 ## data
 p4 <- calories %>% 
@@ -306,8 +299,71 @@ p4 %>%
       margin = margin(t = 15, b = 15)))
 ```
 
-# Problem 5:
-```{r}
- 
-```
+# Problem 5: Sugar Levels
+```{r problem 5}
 
+## data
+p5 <- sales %>% 
+  inner_join(calories, by = 'restaurant') %>%
+  
+  select(restaurant, item, calories, sugar, us_sales) %>% 
+  filter(restaurant!="Taco Bell") %>%
+  
+  group_by(restaurant, us_sales) %>%
+  summarise(median_sugar = median(sugar)) %>% 
+  
+  ungroup() %>% 
+  arrange(desc(median_sugar)) %>% 
+  
+  # order by sugar from High to Low
+  mutate(restaurant = restaurant %>% fct_reorder(median_sugar))
+
+
+## visualization
+p5 %>%  
+  ggplot(aes(x = restaurant,
+             y = us_sales)) +
+  geom_col(aes(fill = median_sugar)) + 
+  
+  scale_x_discrete() + 
+  scale_y_continuous() + 
+  scale_fill_viridis_c() +
+  
+  #labs
+  labs(
+    title = "Problem 5: Sugar Levels ",
+    subtitle = '',
+    x = 'Restaurant',
+    y = 'U.S. sales (in millions)',
+    fill = "Median sugar (grams)\nin fast food entrees",
+    caption =paste0("Data: Hubworks & Tidy Tuesday project • Visualization: Steven Ponce (@sponce1)") 
+  ) +
+  
+  # theme
+  theme_classic() + 
+  
+  theme(
+    plot.margin = margin(t = 10, r = 25, b = 10, l = 20),
+    legend.position = 'right',
+    axis.title = element_text(size = 12),
+    axis.text  = element_text(size = 10),
+    
+    plot.title = element_text(
+      color = "#2C3E50",
+      face = "bold",
+      size = 14,  
+      margin = margin(t = 10)),
+    
+    plot.subtitle = element_text(
+      color = "#2C3E50",
+      size = 14,  
+      margin = margin(b = 5)),
+    
+    plot.caption = element_text(
+      color = "grey60",
+      size = 10,
+      hjust = .5,
+      margin = margin(t = 15, b = 15)))
+
+```
+ 
