@@ -196,7 +196,6 @@ p2 %>%
 ```{r problem 3, message=FALSE, warning=FALSE, fig.height = 12, fig.width = 12}
 
 ## data
-
 p3 <- calories %>% 
   select(restaurant, item, calories, sodium) 
 
@@ -248,4 +247,67 @@ p3 %>%
       margin = margin(t = 15, b = 15)))
 ```
  
+# Problem 4: Any Salad? 
+
+```{r problem 4, fig.height = 8, fig.width = 12}
+## data
+p4 <- calories %>% 
+  select(restaurant, item, calories) %>% 
+  # salad available?
+  mutate(is_salad = str_detect(str_to_lower(item), 'salad')) %>% 
+  # order by calories from High to Low
+  mutate(restaurant = restaurant %>% fct_reorder(calories)) 
+
+
+## visualization
+p4 %>%  
+  ggplot(aes(x = calories, y = restaurant)) +
+  
+  geom_boxplot(outlier.shape = NA) + 
+  geom_jitter(aes(color = is_salad)) + 
+  scale_x_log10() +
+  scale_y_discrete() +
+  scale_color_discrete(labels=c("Not a salad", "Salad")) +
+  
+  #labs
+  labs(
+    title = "Problem 4: Any salad? ",
+    subtitle = '',
+    x = 'Calories (log10 scale)',
+    y = 'Restaurant',
+    color = "Is the entree\n a salad?",
+    caption =paste0("Data: Hubworks & Tidy Tuesday project • Visualization: Steven Ponce (@sponce1)") 
+  ) +
+  
+  # theme
+  theme_bw() + 
+  
+  theme(
+    plot.margin = margin(t = 10, r = 25, b = 10, l = 20),
+    legend.position = 'right',
+    axis.title = element_text(size = 12),
+    axis.text  = element_text(size = 10),
+    
+    plot.title = element_text(
+      color = "#2C3E50",
+      face = "bold",
+      size = 14,  
+      margin = margin(t = 10)),
+    
+    plot.subtitle = element_text(
+      color = "#2C3E50",
+      size = 14,  
+      margin = margin(b = 5)),
+    
+    plot.caption = element_text(
+      color = "grey60",
+      size = 10,
+      hjust = .5,
+      margin = margin(t = 15, b = 15)))
+```
+
+# Problem 5:
+```{r}
  
+```
+
